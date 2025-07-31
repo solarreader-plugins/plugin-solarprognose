@@ -27,29 +27,16 @@ import de.schnippsche.solarreader.backend.connection.network.HttpConnection;
 import de.schnippsche.solarreader.backend.connection.network.HttpConnectionFactory;
 import de.schnippsche.solarreader.backend.field.FieldType;
 import de.schnippsche.solarreader.backend.field.PropertyField;
-import de.schnippsche.solarreader.backend.protocol.KnownProtocol;
 import de.schnippsche.solarreader.backend.provider.AbstractHttpProvider;
 import de.schnippsche.solarreader.backend.provider.CommandProviderProperty;
 import de.schnippsche.solarreader.backend.provider.ProviderProperty;
-import de.schnippsche.solarreader.backend.provider.SupportedInterface;
 import de.schnippsche.solarreader.backend.singleton.GlobalUsrStore;
-import de.schnippsche.solarreader.backend.table.Table;
-import de.schnippsche.solarreader.backend.table.TableCell;
-import de.schnippsche.solarreader.backend.table.TableColumn;
-import de.schnippsche.solarreader.backend.table.TableColumnType;
-import de.schnippsche.solarreader.backend.table.TableRow;
+import de.schnippsche.solarreader.backend.table.*;
 import de.schnippsche.solarreader.backend.util.JsonTools;
 import de.schnippsche.solarreader.backend.util.Setting;
 import de.schnippsche.solarreader.backend.util.StringConverter;
 import de.schnippsche.solarreader.database.Activity;
-import de.schnippsche.solarreader.frontend.ui.HtmlInputType;
-import de.schnippsche.solarreader.frontend.ui.HtmlWidth;
-import de.schnippsche.solarreader.frontend.ui.UIInputElementBuilder;
-import de.schnippsche.solarreader.frontend.ui.UIList;
-import de.schnippsche.solarreader.frontend.ui.UISelecttElementBuilder;
-import de.schnippsche.solarreader.frontend.ui.UITextElementBuilder;
-import de.schnippsche.solarreader.frontend.ui.ValueText;
-import de.schnippsche.solarreader.plugin.PluginMetadata;
+import de.schnippsche.solarreader.frontend.ui.*;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
@@ -58,12 +45,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import org.tinylog.Logger;
 
@@ -81,15 +63,6 @@ import org.tinylog.Logger;
  * <p>Solar power data is typically used in applications related to energy management, solar panel
  * efficiency optimization, and grid management.
  */
-@PluginMetadata(
-    name = "Solarprognose",
-    version = "1.0.1",
-    author = "Stefan Töngi",
-    url = "https://github.com/solarreader-plugins/plugin-Solarprognose",
-    svgImage = "solarprognose.svg",
-    supportedInterfaces = {SupportedInterface.URL},
-    usedProtocol = KnownProtocol.HTTP,
-    supports = "Solarprognose V1")
 public class Solarprognose extends AbstractHttpProvider {
   private static final String BASE_URL =
       "http://{provider_host}/web/solarprediction/api/v1?access-token={token}&item={item}&id={elementid}&type=hourly&_format=json&algorithm={algorithm}&project=solarreader&start_epoch_time={starttime}&end_epoch_time={endtime}";
